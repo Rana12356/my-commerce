@@ -238,7 +238,7 @@
                                 <li><span>4.0 Review(s)</span></li>
                             </ul>
                             <div class="price">
-                                <span>{{$product->price}}</span>
+                                <span>{{$product->selling_price}}</span>
                             </div>
                         </div>
                     </div>
