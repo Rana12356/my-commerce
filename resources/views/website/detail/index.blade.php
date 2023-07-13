@@ -31,17 +31,13 @@ Product Detail Page
             <div class="top-area">
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-md-12 col-12">
-                        <div class="product-images">
-                            <main id="gallery">
-                                <div class="main-img">
-                                    <img src="{{asset($product->image)}}" id="current" alt="#">
-                                </div>
-                                <div class="images">
-                                    @foreach($product->otherImages as $otherImage)
-                                    <img src="{{asset($otherImage->image)}}" class="img" alt="#">
-                                    @endforeach
-                                </div>
-                            </main>
+                        <div class="xzoom-container">
+                            <img class="xzoom" id="xzoom-default" src="{{asset($product->image)}}" xoriginal="{{asset($product->image)}}" />
+                            <div class="xzoom-thumbs">
+                                @foreach($product->otherImages as $otherImage)
+                                <a href="{{asset($otherImage->image)}}"><img class="xzoom-gallery" width="80" src="{{asset($otherImage->image)}}"  xpreview="{{asset($otherImage->image)}}" title="The description goes here"></a>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 col-12">

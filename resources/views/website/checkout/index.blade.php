@@ -37,52 +37,63 @@ Checkout Page
                        </ul>
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="cash">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="single-form form-default">
-                                            <label>Full Name</label>
-                                            <div class="col-md-12 form-input form">
-                                                <input type="text" name="name" required placeholder="Full Name">
+                                <form action="new-cash-order" method="post">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="single-form form-default">
+                                                <label>Full Name</label>
+                                                <div class="col-md-12 form-input form">
+                                                    <input type="text" name="name" required placeholder="Full Name">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="single-form form-default">
+                                                <label>Email Address</label>
+                                                <div class="form-input form">
+                                                    <input type="email" name="email" required placeholder="Email Address">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="single-form form-default">
+                                                <label>Phone Number</label>
+                                                <div class="form-input form">
+                                                    <input type="number" name="mobile" required placeholder="Phone Number">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="single-form form-default">
+                                                <label>Delivery Address</label>
+                                                <div class="form-input form">
+                                                    <textarea name="delivery_address" style="padding-top: 10px; height: 100px" required placeholder="Order Delivery Address"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="single-form form-default">
+                                                <label>Payment Type</label>
+                                                <div class="">
+                                                    <label><input type="radio" checked name="payment_type" value="1"> Cash On Delivery</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="single-checkbox checkbox-style-3">
+                                                <input type="checkbox" id="checkbox-3" checked>
+                                                <label for="checkbox-3"><span></span></label>
+                                                <p>I accept all terms & condition.</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="single-form button">
+                                                <button type="submit" class="btn btn-success btn-sm">Confirm Order</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="single-form form-default">
-                                            <label>Email Address</label>
-                                            <div class="form-input form">
-                                                <input type="email" name="email" required placeholder="Email Address">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="single-form form-default">
-                                            <label>Phone Number</label>
-                                            <div class="form-input form">
-                                                <input type="number" name="mobile" required placeholder="Phone Number">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="single-form form-default">
-                                            <label>Delivery Address</label>
-                                            <div class="form-input form">
-                                                <textarea name="deliver_address" required placeholder="Order Delivery Address"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="single-checkbox checkbox-style-3">
-                                            <input type="checkbox" id="checkbox-3" checked>
-                                            <label for="checkbox-3"><span></span></label>
-                                            <p>I accept all terms & condition.</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="single-form button">
-                                            <button type="submit" class="btn btn-success btn-sm">Confirm Order</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                             <div class="tab-pane fade show" id="online">
 
@@ -95,21 +106,42 @@ Checkout Page
                         <div class="checkout-sidebar-price-table">
                             <h5 class="title">Shopping Cart Summary</h5>
                             <div class="sub-total-price">
+                                @php($total=0)
                                 @foreach(ShoppingCart::all() as $item)
                                 <div class="total-price">
-                                    <p class="value">{{ $item->name }}:</p>
+                                    <p class="value">
+                                        {{ $item->name }}
+                                        ({{ $item->price }} * {{ $item->qty }})
+                                    </p>
                                     <p class="price">{{ $item->price * $item->qty }}</p>
                                 </div>
+                                    @php($total = $total + ($item->price * $item->qty))
                                 @endforeach
                             </div>
                             <div class="total-payable">
                                 <div class="payable-price">
-                                    <p class="value">
-                                        {{ $item->name }}
-                                        ({{ $item->qty }} * {{ $item->price }})
-                                    </p>
-                                    <p class="price">{{ $item->price * $item->qty }}</p>
+                                    <p class="value">SubTotal Price:</p>
+                                    <p class="price">{{ $total }}</p>
                                 </div>
+                                <div class="payable-price">
+                                    <p class="value">Tax Amount(15%):</p>
+                                    <p class="price">{{ $tax = round((($total*15)/100)) }}</p>
+                                </div>
+                                <div class="payable-price">
+                                    <p class="value">Shipping Amount:</p>
+                                    <p class="price">{{ $shipping = 100 }}</p>
+                                </div>
+                            </div>
+                            <div class="total-payable">
+                                <div class="payable-price">
+                                    <p class="value">Total Payable:</p>
+                                    <p class="price">{{ $orderTotal = $total + $tax + $shipping }}</p>
+                                </div>
+                                <?php
+                                    Session::put('order_total', $orderTotal);
+                                    Session::put('tax_total', $tax);
+                                    Session::put('shipping_total', $shipping);
+                                ?>
                             </div>
                             <div class="price-table-btn button">
                                 <a href="javascript:void(0)" class="btn btn-alt">Checkout</a>
@@ -125,6 +157,5 @@ Checkout Page
             </div>
         </div>
     </section>
-
 
 @endsection
