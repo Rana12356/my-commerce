@@ -1,7 +1,7 @@
 @extends('website.master')
 
 @section('title')
-   Customer Dashboard Page
+    Customer Profile Page
 @endsection
 
 @section('body')
@@ -11,7 +11,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">Dashboard</h1>
+                        <h1 class="page-title">Customer Profile</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
@@ -41,7 +41,34 @@
                 </div>
                 <div class="col-md-9">
                     <div class="card card-body">
-                        <h1>My Dashboard ..</h1>
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>SL NO</th>
+                                    <th>Order NO</th>
+                                    <th>Order Date</th>
+                                    <th>Order Total</th>
+                                    <th>Delivery Address</th>
+                                    <th>Order Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($orders as $order)
+                                <tr>
+                                    <td>1</td>
+                                    <td>{{ $order->id }}</td>
+                                    <td>{{ $order->order_date }}</td>
+                                    <td>{{ $order->order_total }}</td>
+                                    <td>{{ $order->delivery_address }}</td>
+                                    <td>{{ $order->order_status }}</td>
+                                    <td>
+                                        <a href="" class="btn btn-success">Detail</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -49,3 +76,4 @@
     </section>
 
 @endsection
+

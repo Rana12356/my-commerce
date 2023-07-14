@@ -44,7 +44,12 @@ Checkout Page
                                             <div class="single-form form-default">
                                                 <label>Full Name</label>
                                                 <div class="col-md-12 form-input form">
-                                                    <input type="text" name="name" required placeholder="Full Name">
+                                                    @if(isset($customer->id))
+                                                        <input type="text" name="name" required value="{{ $customer->name }}" readonly placeholder="Full Name">
+                                                    @else
+                                                        <input type="text" name="name" required placeholder="Full Name">
+                                                        <span class="text-danger">{{ $errors->has('name') ? $errors->first('name') : '' }}</span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -52,7 +57,12 @@ Checkout Page
                                             <div class="single-form form-default">
                                                 <label>Email Address</label>
                                                 <div class="form-input form">
-                                                    <input type="email" name="email" required placeholder="Email Address">
+                                                    @if(isset($customer->id))
+                                                        <input type="email" name="email" required value="{{ $customer->email }}" readonly placeholder="Email Address">
+                                                    @else
+                                                        <input type="email" name="email" required placeholder="Email Address">
+                                                        <span class="text-danger">{{ $errors->has('email') ? $errors->first('email') : '' }}</span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -60,7 +70,12 @@ Checkout Page
                                             <div class="single-form form-default">
                                                 <label>Phone Number</label>
                                                 <div class="form-input form">
-                                                    <input type="number" name="mobile" required placeholder="Phone Number">
+                                                    @if(isset($customer->id))
+                                                        <input type="number" name="mobile" value="{{ $customer->mobile }}" readonly required placeholder="Phone Number">
+                                                    @else
+                                                        <input type="number" name="mobile" required placeholder="Phone Number">
+                                                        <span class="text-danger">{{ $errors->has('mobile') ? $errors->first('mobile') : '' }}</span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -69,6 +84,7 @@ Checkout Page
                                                 <label>Delivery Address</label>
                                                 <div class="form-input form">
                                                     <textarea name="delivery_address" style="padding-top: 10px; height: 100px" required placeholder="Order Delivery Address"></textarea>
+                                                    <span class="text-danger">{{ $errors->has('delivery_address') ? $errors->first('delivery_address') : '' }}</span>
                                                 </div>
                                             </div>
                                         </div>
