@@ -16,7 +16,7 @@ class OrderDetail extends Model
     {
         foreach (ShoppingCart::all() as $item)
         {
-            self::$orderDetail = new OrderDetail();
+             self::$orderDetail = new OrderDetail();
              self::$orderDetail->order_id = $orderId;
              self::$orderDetail->product_id = $item->id;
              self::$orderDetail->product_name = $item->name;
