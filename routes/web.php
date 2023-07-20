@@ -13,6 +13,7 @@ use App\Http\Controllers\UnitController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\customerOrderController;
+use App\Http\Controllers\AdminOrderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,10 +38,13 @@ Route::get('/complete-order', [CheckoutController::class, 'completeOrder'])->nam
 Route::get('/customer-login', [CustomerAuthController::class, 'index'])->name('customer.login');
 Route::post('/customer-login', [CustomerAuthController::class, 'login'])->name('customer.login');
 Route::post('/customer-register', [CustomerAuthController::class, 'register'])->name('customer.register');
-Route::get('/customer-logout', [CustomerAuthController::class, 'logout'])->name('customer.logout');
-Route::get('/customer-dashboard', [CustomerAuthController::class, 'dashboard'])->name('customer.dashboard');
-Route::get('/customer-profile', [CustomerAuthController::class, 'profile'])->name('customer.profile');
-Route::get('/customer-order', [CustomerOrderController::class, 'allOrder'])->name('customer.order');
+
+Route::middleware(['customer'])->group(function () {
+    Route::get('/customer-dashboard', [CustomerAuthController::class, 'dashboard'])->name('customer.dashboard');
+    Route::get('/customer-profile', [CustomerAuthController::class, 'profile'])->name('customer.profile');
+    Route::get('/customer-order', [CustomerOrderController::class, 'allOrder'])->name('customer.order');
+    Route::get('/customer-logout', [CustomerAuthController::class, 'logout'])->name('customer.logout');
+});
 
 // SSLCOMMERZ Start
 Route::get('/example1', [SslCommerzPaymentController::class, 'exampleEasyCheckout']);
@@ -99,4 +103,6 @@ Route::middleware([ 'auth:sanctum',config('jetstream.auth_session'), 'verified']
     Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
     Route::post('/product/update/{id}', [ProductController::class, 'update'])->name('product.update');
     Route::get('/product/delete/{id}', [ProductController::class, 'delete'])->name('product.delete');
+
+    Route::get('/admin/all-order', [AdminOrderController::class, 'index'])->name('admin.all-order');
 });
